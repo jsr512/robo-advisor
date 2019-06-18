@@ -1,5 +1,6 @@
 
 import requests
+import json
 
 #Information Output
 
@@ -10,8 +11,8 @@ print(type(response))
 print(response.status_code)
 print(response.text)
 
+parsed_response = json.loads(response.text)
 
-quit()  
 
 #Information Output
 
