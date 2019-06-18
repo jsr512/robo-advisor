@@ -1,3 +1,20 @@
+
+import requests
+
+#Information Output
+
+requests_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo"
+response = requests.get(requests_url)
+
+print(type(response))
+print(response.status_code)
+print(response.text)
+
+
+quit()  
+
+#Information Output
+
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
 print("-------------------------")
