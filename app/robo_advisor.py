@@ -13,7 +13,9 @@ load_dotenv()
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
-#Information Output
+now = datetime.datetime.now()
+
+#Information Input
 
 api_key = os.environ.get("ALPHA_VANTAGE_API_KEY")
 
@@ -29,6 +31,8 @@ while True:
     else:
         break
  
+#Information Output
+
 requests_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
 response = requests.get(requests_url)
 
@@ -44,6 +48,7 @@ parsed_response = json.loads(response.text)
 while True: # Used this reference here: https://docs.python.org/3/tutorial/errors.html
     try:
         last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+        break
     except KeyError:
         print("Oops. Looks like there was a problem with that ticker. Please check that the ticker exists and was entered properly")
         quit()
@@ -90,10 +95,10 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
     
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print(f"SELECTED SYMBOL: {symbol}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print(f"REQUEST AT: {now}")
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
