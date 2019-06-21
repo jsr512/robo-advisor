@@ -1,8 +1,11 @@
-#32 min youtube walkthrough
+#53:27 youtube walkthrough
 
-import requests
+import csv
 import json
 import datetime 
+import os
+
+import requests
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
@@ -39,12 +42,23 @@ for date in dates:
 recent_high = max(high_prices) # max of all high
 recent_low = min(low_prices)
 
+
 #Information Output
+
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
+
+with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+    writer = csv.DictWriter(csv_file, fieldnames=["city", "name"])
+    writer.writeheader() # uses fieldnames set above
+    writer.writerow({"city": "New York", "name": "Yankees"})
+    writer.writerow({"city": "New York", "name": "Mets"})
+    writer.writerow({"city": "Boston", "name": "Red Sox"})
+    writer.writerow({"city": "New Haven", "name": "Ravens"})
 
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
 print("-------------------------")
-print("REQUESTING STOCK MARKET DATA...")
+print("REQUESTING STOCK MARKET DATA")
 print("REQUEST AT: 2018-02-20 02:00pm")
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
@@ -55,5 +69,8 @@ print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
+print(f"Writing Data to CSV: {csv_file_path}..")
+print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------") 
+
