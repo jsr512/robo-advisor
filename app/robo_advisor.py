@@ -23,23 +23,30 @@ while True:
     if len(symbol) > 4:
         print("Ticker is not valid. Please reneter")
         next 
-    elif (symbol.isdigit()) == True: 
+    elif (symbol.isdigit()) == True: ##used this reference to kick out #'s https://www.geeksforgeeks.org/python-string-isdigit-application/
         print("Tickers cannot contain numbers. Please reneter")
         next 
     else:
         break
  
-
 requests_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
 response = requests.get(requests_url)
 
-print(type(response))
-print(response.status_code)
-#print(response.text)
+if (response.status_code) == 200:
+    print("Ticker validating... printing data")
+    pass
+else:
+    print("Oops, looks like there was a problem connecting while looking up that ticker. Please check to see the information input is correct and try again.")
+    quit()
 
 parsed_response = json.loads(response.text)
 
-last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+while True: # Used this reference here: https://docs.python.org/3/tutorial/errors.html
+    try:
+        last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+    except KeyError:
+        print("Oops. Looks like there was a problem with that ticker. Please check that the ticker exists and was entered properly")
+        quit()
 
 tsd = parsed_response["Time Series (Daily)"]
 dates = list(tsd.keys()) 
