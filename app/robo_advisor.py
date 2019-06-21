@@ -57,7 +57,6 @@ tsd = parsed_response["Time Series (Daily)"]
 dates = list(tsd.keys()) 
 latest_day = dates[0]
 
-
 latest_close = tsd[latest_day]["4. close"]
 
 high_prices = []
@@ -69,19 +68,16 @@ for date in dates:
     high_prices.append(float(high_price))
     low_prices.append(float(low_price))
 
-recent_high = max(high_prices) # max of all high
+recent_high = max(high_prices) 
 recent_low = min(low_prices)
-
-
-#Information Output
 
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
 
 csv_headers = ["timestamp", "open", "high", "low", "close", "volume"]
 
-with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+with open(csv_file_path, "w") as csv_file: 
     writer = csv.DictWriter(csv_file, fieldnames=csv_headers)
-    writer.writeheader() # uses fieldnames set above
+    writer.writeheader() 
     for date in dates:
         daily_prices = tsd[date]
         writer.writerow({
@@ -92,7 +88,23 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "close": daily_prices["4. close"],
             "volume": daily_prices["5. volume"],
         })
-    
+
+#Reccomendation
+
+adjusted_high = .8 *(float(recent_high))
+
+while True:
+    if float(latest_close) >= float(adjusted_high):
+        recommendation = "Sell!"
+        reason = "Stock is within 20 percent of its recent high and might be overvalued."
+        break
+
+    else:  
+        recommendation = "Buy!"
+        reason = "Stock is 20 percent lower than its recent high and might be undervalued."
+        break
+
+#Print Statement
 
 print("-------------------------")
 print(f"SELECTED SYMBOL: {symbol}")
@@ -105,8 +117,8 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+print(f"RECOMMENDATION: {recommendation}")
+print(f"RECOMMENDATION REASON: {reason}")
 print("-------------------------")
 print(f"Writing Data to CSV: {csv_file_path}..")
 print("-------------------------")
