@@ -16,7 +16,19 @@ def to_usd(my_price):
 #Information Output
 
 api_key = os.environ.get("ALPHA_VANTAGE_API_KEY")
-symbol = "MSFT"
+
+while True: 
+    symbol = input("Please enter a valid ticker symbol (example: AMZN): ")
+
+    if len(symbol) > 4:
+        print("Ticker is not valid. Please reneter")
+        next 
+    elif (symbol.isdigit()) == True: 
+        print("Tickers cannot contain numbers. Please reneter")
+        next 
+    else:
+        break
+ 
 
 requests_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
 response = requests.get(requests_url)
