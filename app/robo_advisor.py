@@ -1,5 +1,3 @@
-#53:27 youtube walkthrough
-
 import csv
 import json
 import datetime 
